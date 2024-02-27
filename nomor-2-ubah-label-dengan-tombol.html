@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mengubah label dengan mengklik tombol</title>
+  </head>
+  <body>  
+    Siswa yang piket sekarang:
+    <p id="labelSiswa">-</p>
+
+    <button onclick="ubahSiswa()">Ubah / Acak Siswa</button>
+
+    <script>
+      var siswa = {
+        "data": [
+            {
+                "id": 1,
+                "name": "agil"
+            },
+            {
+                "id": 2,
+                "name": "bill"
+            },
+            {
+                "id": 3,
+                "name": "cecill"
+            }
+        ]
+      };
+      function ubahSiswa() {
+        var labelSiswa = document.getElementById("labelSiswa");
+        var indexSiswa = Math.floor(Math.random() * siswa.data.length); // Pilih siswa secara acak
+        var siswaPiket = siswa.data[indexSiswa];
+
+        // Setel nilai label dengan data siswa yang terpilih
+        labelSiswa.textContent = `${siswaPiket.name}`;
+      }
+    </script>
+  </body>
+</html>

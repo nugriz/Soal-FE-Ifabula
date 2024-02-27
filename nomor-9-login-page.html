@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #logoutBtn, #welcomeLabel {
+      display: none;
+    }
+  </style>
+  <title>Login Page</title>
+</head>
+<body>
+
+  <label for="username" id="labelUsername">Username:</label>
+  <input type="text" id="username" placeholder="Enter your username">
+
+  <label for="password" id="labelPassword">Password:</label>
+  <input type="password" id="password" placeholder="Enter your password">
+
+  <button onclick="login()">Login</button>
+
+  <label id="welcomeLabel">Welcome,
+    <span id="loggedInUser"></span>!
+  </label>
+  <button id="logoutBtn" onclick="logout()">Logout</button>
+
+  <script>
+    // Check if the user is already logged in
+    document.addEventListener("DOMContentLoaded", function() {
+      checkLoginStatus();
+    });
+
+    function checkLoginStatus() {
+      var loggedInUser = localStorage.getItem("loggedInUser");
+
+      if (loggedInUser) {
+        // User is already logged in
+        showWelcomeMessage(loggedInUser);
+      } else {
+        // User is not logged in
+        hideWelcomeMessage();
+      }
+    }
+
+    function login() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+      // Check if username and password are valid (for simplicity, a basic check)
+      if (username && password) {
+        // Store username in localStorage
+        localStorage.setItem("loggedInUser", username);
+
+        // Show welcome message
+        showWelcomeMessage(username);
+      } else {
+        alert("Please enter valid username and password.");
+      }
+    }
+
+    function logout() {
+      // Remove the logged-in user from localStorage
+      localStorage.removeItem("loggedInUser");
+
+      // Hide welcome message and show login form
+      hideWelcomeMessage();
+    }
+
+    function showWelcomeMessage(username) {
+      // Hide login form elements
+      document.getElementById("labelUsername").style.display = "none";
+      document.getElementById("labelPassword").style.display = "none";
+      document.getElementById("username").style.display = "none";
+      document.getElementById("password").style.display = "none";
+      document.querySelector("button").style.display = "none";
+
+      // Show welcome message, logout button, and set the username in the welcome message
+      document.getElementById("welcomeLabel").style.display = "block";
+      document.getElementById("logoutBtn").style.display = "block";
+      document.getElementById("loggedInUser").innerText = username;
+    }
+
+    function hideWelcomeMessage() {
+      // Show login form elements
+      document.getElementById("labelUsername").style.display = "block";
+      document.getElementById("labelPassword").style.display = "block";
+      document.getElementById("username").style.display = "block";
+      document.getElementById("password").style.display = "block";
+      document.querySelector("button").style.display = "block";
+
+      // Hide welcome message and logout button
+      document.getElementById("welcomeLabel").style.display = "none";
+      document.getElementById("logoutBtn").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

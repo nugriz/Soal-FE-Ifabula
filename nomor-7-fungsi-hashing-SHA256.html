@@ -1,0 +1,15 @@
+<!-- Menggunakan library CryptoJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+
+<script>
+  function hashingSHA256(string) {
+    return CryptoJS.SHA256(string).toString(CryptoJS.enc.Hex);
+  }
+
+  const tanggalHariIni = '28022024';
+  const namaDepanAnda = 'rizki';
+  const jenisKelamin = 'pria';
+  const organisasi = 'ifabula';
+
+  console.log("Hasil hashing SHA-256:", hashingSHA256(tanggalHariIni + namaDepanAnda + jenisKelamin + organisasi));
+</script>
