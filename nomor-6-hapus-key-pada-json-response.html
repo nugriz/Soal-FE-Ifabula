@@ -10,66 +10,65 @@
     </head>
     <body>
         <h1>Posts</h1>
+        <table>
+            <tr>
+                <th>UserId <button onclick="deleteKey('userId')">hapus</button></th>
+                <th>Id <button onclick="deleteKey('id')">hapus</button></th>
+                <th>Title <button onclick="deleteKey('title')">hapus</button></th>
+                <th>Body <button onclick="deleteKey('body')">hapus</button></th>
+            </tr>
+        </table>
         <script>
-            // create table with header
-            var table = document.createElement('table') 
-            var headerRow = table.insertRow()
-            var headerUserId = headerRow.insertCell(0)
-            var headerId = headerRow.insertCell(1)
-            var headerTitle = headerRow.insertCell(2)
-            var headerBody = headerRow.insertCell(3)
+            getPosts()
 
-            headerUserId.textContent = 'User Id [delete]'
-            headerId.textContent = `Id [delete]`
-            headerTitle.textContent = `Title [delete]`
-            headerBody.textContent = `Body [delete]`
+            function getPosts(keyToDelete = null){
+                fetch('https://jsonplaceholder.typicode.com/posts')
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        // Ambil maks 10 data
+                        posts = data.slice(0,10)
+                        posts = posts.map(obj => {
+                            delete obj[keyToDelete]
+                            return obj
+                        })
+                        printPostsToTable(posts)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                }
 
-            headerUserId.className = 'userId'
-            headerId.className = 'id'
-            headerTitle.className = 'title'
-            headerBody.className = 'body'
+            function printPostsToTable(posts) {   
+                var table = document.querySelector('table')
+                posts.map( post => {
+                    console.log(post)
+                    var row = table.insertRow()
+                    var userId = row.insertCell(0)
+                    var id = row.insertCell(1)
+                    var title = row.insertCell(2)
+                    var body = row.insertCell(3)
 
-            headerUserId.setAttribute('onclick', `deleteKey('userId')`)
-            headerId.setAttribute('onclick', `deleteKey('id')`)
-            headerTitle.setAttribute('onclick', `deleteKey('title')`)
-            headerBody.setAttribute('onclick', `deleteKey('body')`)
+                    userId.textContent = `${post.userId || ''}`
+                    id.textContent = `${post.id || ''}`
+                    title.textContent = `${post.title || ''}`
+                    body.textContent = `${post.body || ''}`
 
-            fetch('https://jsonplaceholder.typicode.com/posts')
-                .then(res => {
-                    return res.json();
-                })
-                .then(data => {
-                    // Insert 10 data to table
-                    posts = data.slice(0,10)
-                    posts.map( post => {
-                        var row = table.insertRow()
-                        var userId = row.insertCell(0)
-                        var id = row.insertCell(1)
-                        var title = row.insertCell(2)
-                        var body = row.insertCell(3)
-
-                        userId.textContent = `${post.userId}`
-                        id.textContent = `${post.id}`
-                        title.textContent = `${post.title}`
-                        body.textContent = `${post.body}`
-
-                        userId.className = 'userId'
-                        id.className = 'id'
-                        title.className = 'title'
-                        body.className = 'body'
-                        }
-                    )
-                    document.body.appendChild(table);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+                    row.className = 'row'
+                    }
+                )
+                document.body.appendChild(table);
+            }
             
-            function deleteKey(key){
-                var keys = document.querySelectorAll(`.${key}`)
-                keys.forEach(element => {
-                    element.remove()
-                });
+            function deleteKey(keyToDelete) {
+                deleteTable(keyToDelete)
+                getPosts(keyToDelete)
+            }
+
+            function deleteTable(keyToDelete){
+                var rows = document.querySelectorAll('.row')
+                rows.forEach(element => element.remove())
             }
         </script>
     </body>
